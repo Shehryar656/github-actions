@@ -1,0 +1,28 @@
+name: HTML Validation and Run Workflow
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  validate-html:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Check HTML File Exists
+      run: |
+        if [ -f index.html ]; then
+          echo "HTML file found successfully!"
+        else
+          echo "Error: index.html not found!" && exit 1
+        fi
+
+    - name: HTML Lint Check
+      run: |
+        npm install -g htmlhint
+        htmlhint index.html
