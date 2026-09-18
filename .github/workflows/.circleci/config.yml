@@ -1,0 +1,35 @@
+version: 2.1
+
+# 1. Define Jobs (Kya kaam karna hai)
+jobs:
+  build-and-test:
+    # CircleCI environment (Hum lightweight Node/Linux image use kar rahe hain)
+    docker:
+      - image: cimg/base:current
+
+    steps:
+      # Step 1: Repository se code checkout karna
+      - checkout
+
+      # Step 2: System info check karna
+      - run:
+          name: "Check Environment"
+          command: |
+            echo "CircleCI is running on Linux Server"
+            node -v || echo "Checking system..."
+
+      # Step 3: Project Files aur HTML Check karna
+      - run:
+          name: "Verify HTML File Presence"
+          command: |
+            if [ -f index.html ]; then
+              echo "✅ index.html file exists in repo!"
+            else
+              echo "❌ index.html file is missing!" && exit 1
+            fi
+
+# 2. Define Workflows (Kahan aur kab chalana hai)
+workflows:
+  main-pipeline:
+    jobs:
+      - build-and-test
